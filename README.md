@@ -1,3 +1,10 @@
+Updates:
+
+
+- Updated the compose file to make it more efficient.
+
+
+
 <h1 align="center">Jellyfin</h1>
 <h3 align="center">The Free Software Media System</h3>
 
