@@ -6,18 +6,17 @@ services:
     container_name: jellyfin
     user: "1000:1000"
     volumes:
-      - /home/user/docker/jellyfin/config:/config:Z
-      - /home/user/docker/jellyfin/cache:/cache:Z
-      - /mnt/user/movies:/media:Z
-      - /mnt/user/tvshows:/media2:Z
+      - ./config:/config:Z
+      - ./cache:/cache:Z
+      - /mnt/movies:/media:Z
+      - /mnt/tvshows:/media2:Z
     environment:
-      - JELLYFIN_PublishedServerUrl=127.0.0.1:8096
+      - JELLYFIN_PublishedServerUrl=0.0.0.0:8096
     ports:
       - "8096:8096"
       # - "8920:8920"   # Uncomment if you are using HTTPS
     extra_hosts:
       - "host.podman.internal:host-gateway"
-
 
 
 
