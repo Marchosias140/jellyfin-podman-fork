@@ -2,6 +2,7 @@ Updates:
 
 
 - Updated the compose file to make it more efficient.
+- Fixed volumes to reduce complexities.
 
 
 
