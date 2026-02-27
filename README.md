@@ -1,4 +1,4 @@
-##Updates:
+Updates:
 
 
 
@@ -9,7 +9,7 @@
 
 
 
-##Instructions:
+Instructions:
 
 
 
