@@ -1,9 +1,35 @@
-Updates:
+##Updates:
+
+
 
 
 - Updated the compose file to make it more efficient.
 - Fixed volumes to reduce complexities.
+- When using this file on Endevour OS, besides installing both podman and podman-compose, you must edit the ```docker-compose.yml``` file in order to avoid the error of podman not finding the image. You must change the image variable from jellyfin/jellyfin to docker.io/jellyfin/jellyfin to make it clear for podman from where to pull the image.
 
+
+
+##Instructions:
+
+
+
+
+Inside the podman folder, there is a ```docker-compose.yml``` file.
+Make sure that you have all the required folders created in order to mount the volumes, check the structure by reading the file.
+
+
+
+
+Build and start with
+
+
+
+
+```sudo podman compose up -d```
+
+
+
+Have fun!
 
 
 <h1 align="center">Jellyfin</h1>
