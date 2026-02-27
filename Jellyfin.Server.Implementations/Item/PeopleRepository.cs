@@ -74,9 +74,10 @@ public class PeopleRepository(IDbContextFactory<JellyfinDbContext> dbProvider, I
     /// <inheritdoc />
     public void UpdatePeople(Guid itemId, IReadOnlyList<PersonInfo> people)
     {
-        foreach (var item in people.Where(e => e.Role is null))
+        foreach (var person in people)
         {
-            item.Role = string.Empty;
+            person.Name = person.Name.Trim();
+            person.Role = person.Role?.Trim() ?? string.Empty;
         }
 
         // multiple metadata providers can provide the _same_ person
@@ -95,6 +96,7 @@ public class PeopleRepository(IDbContextFactory<JellyfinDbContext> dbProvider, I
             .ToArray();
 
         var toAdd = people
+            .Where(e => e.Type is not PersonKind.Artist && e.Type is not PersonKind.AlbumArtist)
             .Where(e => !existingPersons.Any(f => f.Name == e.Name && f.PersonType == e.Type.ToString()))
             .Select(Map);
         context.Peoples.AddRange(toAdd);
@@ -108,6 +110,11 @@ public class PeopleRepository(IDbContextFactory<JellyfinDbContext> dbProvider, I
 
         foreach (var person in people)
         {
+            if (person.Type == PersonKind.Artist || person.Type == PersonKind.AlbumArtist)
+            {
+                continue;
+            }
+
             var entityPerson = personsEntities.First(e => e.Name == person.Name && e.PersonType == person.Type.ToString());
             var existingMap = existingMaps.FirstOrDefault(e => e.People.Name == person.Name && e.People.PersonType == person.Type.ToString() && e.Role == person.Role);
             if (existingMap is null)

@@ -159,6 +159,13 @@ public static class StreamingHelpers
 
         string? containerInternal = Path.GetExtension(state.RequestedUrl);
 
+        if (string.IsNullOrEmpty(containerInternal)
+            && (!string.IsNullOrWhiteSpace(streamingRequest.LiveStreamId)
+                || (mediaSource != null && mediaSource.IsInfiniteStream)))
+        {
+            containerInternal = ".ts";
+        }
+
         if (!string.IsNullOrEmpty(streamingRequest.Container))
         {
             containerInternal = streamingRequest.Container;
@@ -194,7 +201,7 @@ public static class StreamingHelpers
             state.OutputVideoCodec = state.Request.VideoCodec;
             state.OutputVideoBitrate = encodingHelper.GetVideoBitrateParamValue(state.VideoRequest, state.VideoStream, state.OutputVideoCodec);
 
-            encodingHelper.TryStreamCopy(state);
+            encodingHelper.TryStreamCopy(state, encodingOptions);
 
             if (!EncodingHelper.IsCopyCodec(state.OutputVideoCodec) && state.OutputVideoBitrate.HasValue)
             {
@@ -261,7 +268,7 @@ public static class StreamingHelpers
         Dictionary<string, string?> streamOptions = new Dictionary<string, string?>();
         foreach (var param in queryString)
         {
-            if (char.IsLower(param.Key[0]))
+            if (param.Key.Length > 0 && char.IsLower(param.Key[0]))
             {
                 // This was probably not parsed initially and should be a StreamOptions
                 // or the generated URL should correctly serialize it
